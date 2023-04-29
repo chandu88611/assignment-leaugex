@@ -1,0 +1,85 @@
+
+*{
+  font-family: sans-serif;
+}
+.bold{
+  font-weight: bold;
+  margin-left: 20px;
+  text-align: left;
+}
+.bold1{
+  font-weight: bold;
+  margin-left:- 70px;
+  text-align: left;
+  
+}
+
+.flex{
+  display: flex;
+  align-items: center;
+  margin-top: -40px;
+  cursor: pointer;
+}
+
+.cart_but{
+  background: none;
+  border: 1px solid red;
+  color: red;border-radius: 3px;
+  padding: 3px;
+  cursor: pointer;
+
+}
+
+#filled-basic::-webkit-calendar-picker-indicator {
+  display: none;
+}
+.search_input::placeholder {
+  color: rgb(255, 255, 255);
+  font-size: large;
+}
+
+.search_input{
+  width: 50%;
+  border-bottom: 1px solid grey;
+border-top: none;
+border-left: none;
+border-right: none;
+font-size: large;
+padding: 15px;
+background:rgb(0,0,0,.5);
+color: white !important;
+
+}
+.search_input:focus{
+  outline: none;
+}
+
+
+
+.cart_image{
+  height: 100px;
+}
+
+.items_center{
+  display: grid;
+  place-items: center;
+}
+.select_box{
+  padding: 5px;
+}
+@media only screen and  (max-width: 991px) {
+  .cart_image{
+      height: 60px;
+  }
+  .select_box{
+    padding: 3px;
+  }
+}
+@media only screen and (max-width: 507px) {
+  .cart_image{
+    height: 50px;
+}
+.select_box{
+  padding: 3px;
+}
+}
