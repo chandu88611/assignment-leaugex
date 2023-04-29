@@ -1,7 +1,10 @@
 import { Box, Link } from "@mui/material";
 import  { useEffect, useMemo, useState } from "react";
 import { AiOutlineShoppingCart, AiOutlineSearch } from "react-icons/ai";
+
 import { FaFilter } from "react-icons/fa";
+import { MdFilterAltOff } from "react-icons/md";
+
 
 
 import { setProducts } from "../redux/productSlice";
@@ -14,6 +17,7 @@ function Header() {
   const [searchText, setSearchText] = useState("");
   const existingCartProducts = JSON.parse(localStorage.getItem('cartProducts')) || [];
   const [data, setData] = useState([]);
+  const [showFilter,setShowFilter]=useState(false)
   useEffect(() => {
     fetch(
       "https://leaguex.s3.ap-south-1.amazonaws.com/task/shopping/catalogue.json"
@@ -28,7 +32,7 @@ function Header() {
       });
   },[]);
   const searchResults = useMemo(() => {
-    const searchLower = searchText.toLowerCase(); // convert the search query to lowercase
+    const searchLower = searchText.toLowerCase(); 
     return data.filter((product) => (
       product.name.toLowerCase().includes(searchLower) ||
       product.color.toLowerCase().includes(searchLower) ||
@@ -87,7 +91,7 @@ function Header() {
       <Box sx={{ p: "30px", display: "flex", alignItems: "center" ,justifyContent:"center",mt:"-20px"}}>
         <input
           type="text"
-          placeholder="search by Name ,Color ,Type"
+          placeholder="Search by Name ,Color ,Type"
           className="search_input"
           list="search-options"
           onChange={(e) => setSearchText(e.target.value)}
@@ -104,12 +108,27 @@ function Header() {
             dispatch(setProducts(searchResults));
             console.log(searchResults);
           }}  style={{background:"rgb(0,0,0,.5)",padding:'5.9px',marginLeft:"1px"}}
-        /><Box  sx={{display:{md:"none",sm:"flex",xs:"flex"},ml:"10px"}}><FaFilter size="30px" /> </Box>
+        />
+        
+        <Box  sx={{display:{md:"none",sm:"flex",xs:"flex"},ml:"10px"}}  onClick={(e)=>{
+          e.stopPropagation()
+          showFilter?setShowFilter(false):setShowFilter(true)
+
+          }}>{showFilter?<MdFilterAltOff  size="40px"/>:<FaFilter size="30px" />} </Box>
       </Box>
-     {/* <Box sx={{display:{md:"none",sm:"flex",xs:"flex"}, position: "fixed",top:110}}>
+     <Box sx={{display:{md:"none",sm:"flex",xs:"flex",visibility:showFilter?"visible":'hidden'}, position: "fixed",top:110}}>
 
      <Sidebar  data={data}/>
-      </Box> */}
+      </Box>
+      <Box
+          sx={{
+            display: { md: "flex", sm: "none", xs: "none" },
+            position: "fixed",
+            top:{ lg:170,md:150},left:0
+          }}
+        >
+          <Sidebar data={data}  />
+        </Box>
     </Box>
   );
 }

@@ -5,7 +5,7 @@ import { Box } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { setProducts } from "./redux/productSlice";
 
-import Sidebar from "./components/Sidebar";
+// import Sidebar from "./components/Sidebar";
 
 function App() {
   const dispatch = useDispatch();
@@ -49,15 +49,7 @@ function App() {
           pl: { sm: "70px", xs: "30px" },
         }}
       >
-       <Box
-          sx={{
-            display: { md: "flex", sm: "none", xs: "none" },
-            position: "fixed",
-            top:{ lg:170,md:150},left:0
-          }}
-        >
-          <Sidebar data={data} searchInputRef={searchInputRef} />
-        </Box>
+       
 
         <Box
           sx={{
