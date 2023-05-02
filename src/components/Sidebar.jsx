@@ -1,7 +1,10 @@
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { updateCart } from "../redux/cartSlice";
+import { useLocation } from 'react-router-dom';
+
 import { setProducts } from "../redux/productSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 function Sidebar({ data }) {
   const dispatch = useDispatch();
@@ -27,8 +30,8 @@ function Sidebar({ data }) {
    const[p2,setp2]=useState("")
    const[p3,setp3]=useState("")
 
-   const[green,setGreen]=useState("")
-
+  const[green,setGreen]=useState("")
+  const existingCartProducts = JSON.parse(localStorage.getItem('cartProducts')) || [];
 
 
    const handleColorClick = (color) => {
@@ -122,11 +125,11 @@ function Sidebar({ data }) {
         break;
     }
   };
-  
+const location=useLocation()
 
 const filterFunction = async (color, type, gender, minPrice, maxPrice) => {
+if(location.pathname==="/"){
   const filterItems = filterData.filter((product) => {
-  
     const lowerCaseColor = color ? color.toLowerCase() : '';
     const lowerCaseType = type ? type.toLowerCase() : '';
     const lowerCaseGender = gender ? gender.toLowerCase() : '';
@@ -140,13 +143,54 @@ const filterFunction = async (color, type, gender, minPrice, maxPrice) => {
             product.gender.toLowerCase().includes(lowerCaseGender) &&
             priceInRange);
   }); 
+// Dispatch action to update the filtered products
 
-  // Dispatch action to update the filtered products
-  await dispatch(setProducts(filterItems));
+await dispatch(setProducts(filterItems));
+}
+
+
+if(location.pathname==="/cart"){
+  const filterItems = existingCartProducts.filter((product) => {
+    const lowerCaseColor = color ? color.toLowerCase() : '';
+    const lowerCaseType = type ? type.toLowerCase() : '';
+    const lowerCaseGender = gender ? gender.toLowerCase() : '';
+    
+    const priceInRange = (minPrice && maxPrice) ? 
+                         (product.price >= minPrice && product.price <= maxPrice) :
+                         true;
+
+    return (product.color.toLowerCase().includes(lowerCaseColor) &&
+            product.type.toLowerCase().includes(lowerCaseType) &&
+            product.gender.toLowerCase().includes(lowerCaseGender) &&
+            priceInRange);
+  }); 
+// Dispatch action to update the filtered products
+
+await dispatch(updateCart(filterItems));
+}
+
+
 };
 
+const  clearAllFilters=()=>{
+  sethoddie('')
+  setBlue('')
+  setGreen('')
+  setRed('')
+  setmen('')
+  setwomen('')
+  setp1('')
+  setp2('')
+  setp3('')
+  setbasic('')
+  setpolo('')
+  if(location.pathname==='/'){
+  dispatch(setProducts(filterData))}
+  if(location.pathname==='/cart'){
+    dispatch(updateCart(existingCartProducts))
+  }
 
-
+}
 useEffect(() => {
   filterFunction(color, type, gender, min, max)
 }, [color, type, gender, min, max]);
@@ -162,15 +206,17 @@ useEffect(() => {
         
       }}
     >
+              <Button sx={{color:'red'}} onClick={clearAllFilters}>Clear</Button>
+      
       <Box
         sx={{
           boxShadow: "1px 1px 5px rgb(200,200,200,.8)",
-          p: "10px",
+          pl: "15px",
          
           display:"grid",
           gridTemplateColumns:{md:"1fr",sm:'1fr 1fr 1fr 1fr',xs:'1fr 1fr'},
           width:{md:'200px',sm:"90vw",xs:'80vw'},
-          justifyContent:'space-around',background:"rgb(200,200,200,.5)"
+          justifyContent:'space-around',background:"rgb(200,200,200,.7)"
         }}
       >
         <Box
@@ -178,10 +224,10 @@ useEffect(() => {
             display: "flex",
             flexDirection: "column",
 
-            gap: "10px",
+            gap: "16px",
           }}
         >
-          <h3 className="bold1">Color</h3>
+          <h3 className="bold1"> Color        </h3>
           <Box className="flex"  onClick={()=>{
             setColor("red")
               
@@ -206,7 +252,7 @@ useEffect(() => {
 
             handleColorClick("blue")
         }}>
-        <  Box sx={{width:"15px",height:'15px',background:blue?"blue":'gray'}}>
+        <Box sx={{width:"15px",height:'15px',background:blue?"blue":'gray'}}>
             
           </Box>
             <p className="bold">Blue</p>
@@ -218,7 +264,7 @@ useEffect(() => {
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
-            gap: "10px",
+            gap: "16px",
           }}
         >
           <h3 className="bold1">Gender</h3>
@@ -252,7 +298,7 @@ useEffect(() => {
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
-            gap: "10px",
+            gap: "16px",
           }}
         >
           <h3 className="bold1">Price</h3>
@@ -270,7 +316,7 @@ useEffect(() => {
           </Box>
           <Box className="flex"  onClick={()=>{
            setmax(450)
-           setmin(250)
+           setmin(251)
            
             handlePriceClick("251")
             }}>
@@ -284,7 +330,7 @@ useEffect(() => {
             handlePriceClick("450")
             }}>
           <Box sx={{width:"15px",height:'15px',background:p3?"blue":'gray'}}></Box>
-            <p className="bold">Rs450</p>
+            <p className="bold">Rs450 /more</p>
           </Box>
         </Box>
         <Box
@@ -292,7 +338,7 @@ useEffect(() => {
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
-            gap: "10px",
+            gap: "16px",
           }}
         >
           <h3 className="bold1" >Type</h3>
@@ -319,6 +365,7 @@ useEffect(() => {
           </Box>
         </Box>
       </Box>
+
     </Box>
   );
 }

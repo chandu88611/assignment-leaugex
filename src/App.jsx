@@ -51,7 +51,7 @@ function App() {
       >
        
 
-        <Box
+       {filteredProducts.length>0? <Box
           sx={{
             display: "grid",
             gridTemplateColumns: {
@@ -79,7 +79,8 @@ function App() {
               />
             </Box>
           ))}
-        </Box>
+        </Box>:<h3 style={{textAlign:'center'}}>No Items Found</h3>}
+
       </Box>
     </Box>
   );

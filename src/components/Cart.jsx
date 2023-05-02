@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { useSelector } from "react-redux";
 import "../App.css"
 import { Link } from 'react-router-dom';
+
 function Cart() {
   // const [quantity,setQuantity]=useState(1)
   const [total,setTotal]=useState(0)
@@ -27,7 +28,7 @@ function Cart() {
     <div style={{padding:'40px' }}>
       <Box sx={{display:'flex',justifyContent:'space-between',  width: {lg:"78%", md: "65%", sm: "95%", xs: "100%" },
             ml: { md: "250px", sm: "none", xs: "none" }}}><h2>Shopping Cart</h2>   <h4>Cart Total <br/> <span style={{color:'green'}}>{total+" Rs"}</span></h4></Box>
-   {products.length>0?<Box sx={{display:'flex',flexDirection:'column',  width: {lg:"78%", md: "65%", sm: "95%", xs: "100%" },
+   {JSON.parse(localStorage.getItem('cartProducts')).length>0?products.length>0?<Box sx={{display:'flex',flexDirection:'column',  width: {lg:"78%", md: "65%", sm: "95%", xs: "100%" },
             ml: { md: "250px", sm: "none", xs: "none" },}}>
     {products.map((product, index) => (
           <Box key={index} sx={{height:"100px",display:'flex',gap:{md:"40px",sm:'30px',xs:'15px'},justifyContent:'space-around',p:'20px',borderBottom:'1px solid gray'}}>
@@ -43,10 +44,9 @@ function Cart() {
           </Box>
         ))}
 
-   </Box>:<Box sx={{textAlign:'center'}}>Your Cart Is Empty <br/>  <br/> Add Items  
-          <Link href="/" style={{ color: "green" ,marginLeft:'5px'}}>
-             Products
-          </Link></Box>}
+   </Box>:<h3 style={{textAlign:'center'}}>No Items Found</h3>:<Box sx={{textAlign:'center'}}>Your Cart Is Empty <br/>  <br/> Add Items  
+        
+          </Box>}
 
 
     </div>

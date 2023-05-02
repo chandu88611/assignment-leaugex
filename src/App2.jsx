@@ -15,8 +15,7 @@ function App2() {
     <Route path="/" element={  <App /> } />  
     
          <Route path="/cart" element={  <Cart/>} />
-           {/* <Route path="/laminates" element={ <Layout> <Laminates /> </Layout>}/>
-        <Route path="/plywood" element={ <Layout> <Playwood /> </Layout>}/> */}
+         
    
 
          
@@ -24,7 +23,7 @@ function App2() {
        
           
           
-          {/* <Route path="*" element={<Notfound />}/> */}
+       
         </Routes>
     
       
